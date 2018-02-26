@@ -347,6 +347,13 @@ func (ca *CA) Stop() error {
 	return err
 }
 
+func (ca *CA) createCAKeyPair(name string) *ecdsa.PrivateKey {
+	caLogger.Debug("Creating CA key pair.")
+
+	path := ca.path
+	return CreateCAKeyPair(name, path)
+}
+
 func (ca *CA) readCAPrivateKey(name string) (*ecdsa.PrivateKey, error) {
 	caLogger.Debug("Reading CA private key.")
 
