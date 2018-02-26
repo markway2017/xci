@@ -16,6 +16,11 @@ geth:
 	@echo "Done building."
 	@echo "Run \"$(GOBIN)/geth\" to launch geth."
 
+pki:
+	build/env.sh go run build/ci.go install ./crypto/caserver
+	@echo "Done building."
+	@echo "Run \"$(GOBIN)/caserver to start the pki server."
+
 swarm:
 	build/env.sh go run build/ci.go install ./cmd/swarm
 	@echo "Done building."
