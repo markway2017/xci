@@ -1,7 +1,7 @@
 
 # XCI
 
-XCI is an Ethereum-based blockchain platform with permission control and configurable consensus mechanism.
+XCI is a public blockchain for medical big data which is Ethereum-based with privacy protection, identity authentication and configurable consensus mechanism.
 
 ## Features
 
@@ -12,7 +12,7 @@ XCI is an Ethereum-based blockchain platform with permission control and configu
   > Different nodes assign a different account, the account has designated authority level. Each node can finely control what things can do by the permission control.
 
 3. Configurable consensus mechanism
-  > Use the sophisticated POS, PBFT and other consensus algorithm to replace the POW algorithms in order to achieve effective and efficient, to reduce the consumption of computing resources, increase the transaction throughput. The mechanism can be specified by the “common/properties.yaml”.
+  > Use the sophisticated POS, DPOS, PBFT and other consensus algorithm to replace the POW algorithms in order to achieve effective and efficient, to reduce the consumption of computing resources, increase the transaction throughput. The mechanism can be specified by the “common/properties.yaml”.
 
 
 ## Contribution
