@@ -41,23 +41,23 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/ethstats"
-	"github.com/ethereum/go-ethereum/les"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/discv5"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/xcareteam/xci/accounts"
+	"github.com/xcareteam/xci/accounts/keystore"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/eth"
+	"github.com/xcareteam/xci/eth/downloader"
+	"github.com/xcareteam/xci/ethclient"
+	"github.com/xcareteam/xci/ethstats"
+	"github.com/xcareteam/xci/les"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/node"
+	"github.com/xcareteam/xci/p2p"
+	"github.com/xcareteam/xci/p2p/discover"
+	"github.com/xcareteam/xci/p2p/discv5"
+	"github.com/xcareteam/xci/p2p/nat"
+	"github.com/xcareteam/xci/params"
 	"golang.org/x/net/websocket"
 )
 
@@ -450,7 +450,7 @@ func (f *faucet) apiHandler(conn *websocket.Conn) {
 		case *noauthFlag:
 			username, avatar, address, err = authNoAuth(msg.URL)
 		default:
-			err = errors.New("Something funky happened, please open an issue at https://github.com/ethereum/go-ethereum/issues")
+			err = errors.New("Something funky happened, please open an issue at https://github.com/xcareteam/xci/issues")
 		}
 		if err != nil {
 			if err = sendError(conn, err); err != nil {

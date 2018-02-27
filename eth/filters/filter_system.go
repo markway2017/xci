@@ -25,12 +25,12 @@ import (
 	"sync"
 	"time"
 
-	ethereum "github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/rpc"
+	ethereum "github.com/xcareteam/xci"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/rpc"
 )
 
 // Type determines the kind of filter and is used to put the filter in to

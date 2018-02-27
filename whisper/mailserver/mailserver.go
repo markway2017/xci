@@ -21,12 +21,12 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
-	whisper "github.com/ethereum/go-ethereum/whisper/whisperv6"
+	"github.com/xcareteam/xci/cmd/utils"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/crypto"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/rlp"
+	whisper "github.com/xcareteam/xci/whisper/whisperv6"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/util"
 )

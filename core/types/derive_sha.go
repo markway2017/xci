@@ -19,9 +19,9 @@ package types
 import (
 	"bytes"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/rlp"
+	"github.com/xcareteam/xci/trie"
 )
 
 type DerivableList interface {

@@ -30,10 +30,10 @@ import (
 	"testing/quick"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/crypto"
+	"github.com/xcareteam/xci/ethdb"
+	"github.com/xcareteam/xci/rlp"
 )
 
 func init() {

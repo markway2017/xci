@@ -27,13 +27,13 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/internal/cmdtest"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/ethereum/go-ethereum/swarm"
+	"github.com/xcareteam/xci/accounts"
+	"github.com/xcareteam/xci/accounts/keystore"
+	"github.com/xcareteam/xci/internal/cmdtest"
+	"github.com/xcareteam/xci/node"
+	"github.com/xcareteam/xci/p2p"
+	"github.com/xcareteam/xci/rpc"
+	"github.com/xcareteam/xci/swarm"
 )
 
 func init() {

@@ -22,12 +22,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/crypto/sha3"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core/state"
+	"github.com/xcareteam/xci/crypto/sha3"
+	"github.com/xcareteam/xci/ethdb"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/trie"
 )
 
 // stateReq represents a batch of state fetch requests groupped together into

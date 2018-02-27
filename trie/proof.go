@@ -20,11 +20,11 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/crypto"
+	"github.com/xcareteam/xci/ethdb"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/rlp"
 )
 
 // Prove constructs a merkle proof for key. The result contains all encoded nodes

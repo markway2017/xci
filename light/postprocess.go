@@ -22,15 +22,15 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/bitutil"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/common/bitutil"
+	"github.com/xcareteam/xci/core"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/ethdb"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/params"
+	"github.com/xcareteam/xci/rlp"
+	"github.com/xcareteam/xci/trie"
 )
 
 const (

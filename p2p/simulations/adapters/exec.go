@@ -36,11 +36,11 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/node"
+	"github.com/xcareteam/xci/p2p"
+	"github.com/xcareteam/xci/p2p/discover"
+	"github.com/xcareteam/xci/rpc"
 	"golang.org/x/net/websocket"
 )
 

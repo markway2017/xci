@@ -29,11 +29,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/simulations/adapters"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/p2p"
+	"github.com/xcareteam/xci/p2p/discover"
+	"github.com/xcareteam/xci/p2p/simulations/adapters"
+	"github.com/xcareteam/xci/rpc"
 	"github.com/julienschmidt/httprouter"
 	"golang.org/x/net/websocket"
 )

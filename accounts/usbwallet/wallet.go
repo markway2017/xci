@@ -25,11 +25,11 @@ import (
 	"sync"
 	"time"
 
-	ethereum "github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
+	ethereum "github.com/xcareteam/xci"
+	"github.com/xcareteam/xci/accounts"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/log"
 	"github.com/karalabe/hid"
 )
 

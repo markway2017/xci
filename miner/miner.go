@@ -21,17 +21,17 @@ import (
 	"fmt"
 	"sync/atomic"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/xcareteam/xci/accounts"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/consensus"
+	"github.com/xcareteam/xci/core"
+	"github.com/xcareteam/xci/core/state"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/eth/downloader"
+	"github.com/xcareteam/xci/ethdb"
+	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/params"
 )
 
 // Backend wraps all methods required for mining.

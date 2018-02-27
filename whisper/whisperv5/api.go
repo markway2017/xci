@@ -24,12 +24,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/common/hexutil"
+	"github.com/xcareteam/xci/crypto"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/p2p/discover"
+	"github.com/xcareteam/xci/rpc"
 )
 
 const (

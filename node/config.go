@@ -25,14 +25,14 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/accounts/usbwallet"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
+	"github.com/xcareteam/xci/accounts"
+	"github.com/xcareteam/xci/accounts/keystore"
+	"github.com/xcareteam/xci/accounts/usbwallet"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/crypto"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/p2p"
+	"github.com/xcareteam/xci/p2p/discover"
 )
 
 const (

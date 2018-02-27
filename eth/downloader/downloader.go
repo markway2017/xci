@@ -25,14 +25,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	ethereum "github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/params"
+	ethereum "github.com/xcareteam/xci"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/ethdb"
+	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/metrics"
+	"github.com/xcareteam/xci/params"
 )
 
 var (

@@ -25,13 +25,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core/state"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/metrics"
+	"github.com/xcareteam/xci/params"
 	"gopkg.in/karalabe/cookiejar.v2/collections/prque"
 )
 
