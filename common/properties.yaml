@@ -1,0 +1,33 @@
+
+# The XCI is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+caserver:
+
+        rootpath: "blockchain"
+        cadir: "CA"
+
+        # port the CA services are listening on
+        port: ":50051"
+
+        address: "58.32.9.89"
+
+
+security:
+    # Can be 256 or 384
+    # Must be the same as in core.yaml
+    level: 256
+
+    # Can be SHA2 or SHA3
+    # Must be the same as in core.yaml
+    hashAlgorithm: SHA3
+
+
+pki:
+          ca:
+                 subject:
+                         organization: XCIBlockchain
+                         country: China
+
