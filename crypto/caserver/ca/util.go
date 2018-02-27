@@ -11,7 +11,6 @@ import (
 	"encoding/pem"
 	"io/ioutil"
 	"crypto/ecdsa"
-	"github.com/hyperledger/fabric/core/crypto/primitives"
 	"strings"
 	"crypto/rand"
 	"os"
@@ -64,7 +63,7 @@ func CreateCAKeyPair(name, path string) *ecdsa.PrivateKey {
 
 	caLogger.Debugf("Creating CA key pair. name = %s", name)  // name = Geth/v1.4.9-stable/darwin/go1.7.1
 
-	curve := primitives.GetDefaultCurve()
+	curve := GetDefaultCurve()
 	//curve := secp256k1.S256()
 	//curve := elliptic.P256()
 
