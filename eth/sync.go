@@ -21,11 +21,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/eth/downloader"
+	"github.com/xcareteam/xci/log"
+	"github.com/xcareteam/xci/p2p/discover"
 )
 
 const (

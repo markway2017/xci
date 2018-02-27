@@ -23,11 +23,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/consensus"
+	"github.com/xcareteam/xci/consensus/ethash"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/log"
 )
 
 type hashrate struct {

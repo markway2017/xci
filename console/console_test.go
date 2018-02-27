@@ -26,12 +26,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/internal/jsre"
-	"github.com/ethereum/go-ethereum/node"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/consensus/ethash"
+	"github.com/xcareteam/xci/core"
+	"github.com/xcareteam/xci/eth"
+	"github.com/xcareteam/xci/internal/jsre"
+	"github.com/xcareteam/xci/node"
 )
 
 const (

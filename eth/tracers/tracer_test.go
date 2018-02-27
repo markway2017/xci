@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core/vm"
+	"github.com/xcareteam/xci/params"
 )
 
 type account struct{}

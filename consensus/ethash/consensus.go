@@ -24,13 +24,13 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/misc"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/common/math"
+	"github.com/xcareteam/xci/consensus"
+	"github.com/xcareteam/xci/consensus/misc"
+	"github.com/xcareteam/xci/core/state"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/params"
 	set "gopkg.in/fatih/set.v0"
 )
 

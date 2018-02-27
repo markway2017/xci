@@ -26,13 +26,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/core/state"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/crypto"
+	"github.com/xcareteam/xci/ethdb"
+	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/params"
 )
 
 // testTxPoolConfig is a transaction pool configuration without stateful disk

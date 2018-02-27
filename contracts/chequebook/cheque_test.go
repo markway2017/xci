@@ -24,12 +24,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/contracts/chequebook/contract"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/xcareteam/xci/accounts/abi/bind"
+	"github.com/xcareteam/xci/accounts/abi/bind/backends"
+	"github.com/xcareteam/xci/common"
+	"github.com/xcareteam/xci/contracts/chequebook/contract"
+	"github.com/xcareteam/xci/core"
+	"github.com/xcareteam/xci/crypto"
 )
 
 var (

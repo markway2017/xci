@@ -22,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/xcareteam/xci/log"
 )
 
 // SwAP Swarm Accounting Protocol with

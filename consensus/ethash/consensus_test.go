@@ -23,9 +23,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/xcareteam/xci/common/math"
+	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/params"
 )
 
 type diffTest struct {

@@ -24,17 +24,17 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/ethstats"
-	"github.com/ethereum/go-ethereum/les"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/params"
-	whisper "github.com/ethereum/go-ethereum/whisper/whisperv5"
+	"github.com/xcareteam/xci/core"
+	"github.com/xcareteam/xci/eth"
+	"github.com/xcareteam/xci/eth/downloader"
+	"github.com/xcareteam/xci/ethclient"
+	"github.com/xcareteam/xci/ethstats"
+	"github.com/xcareteam/xci/les"
+	"github.com/xcareteam/xci/node"
+	"github.com/xcareteam/xci/p2p"
+	"github.com/xcareteam/xci/p2p/nat"
+	"github.com/xcareteam/xci/params"
+	whisper "github.com/xcareteam/xci/whisper/whisperv5"
 )
 
 // NodeConfig represents the collection of configuration values to fine tune the Geth

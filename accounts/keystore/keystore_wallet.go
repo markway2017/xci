@@ -19,9 +19,9 @@ package keystore
 import (
 	"math/big"
 
-	ethereum "github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/core/types"
+	ethereum "github.com/xcareteam/xci"
+	"github.com/xcareteam/xci/accounts"
+	"github.com/xcareteam/xci/core/types"
 )
 
 // keystoreWallet implements the accounts.Wallet interface for the original
