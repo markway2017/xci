@@ -28,6 +28,7 @@ import (
 	"github.com/xcareteam/xci/p2p"
 	"github.com/xcareteam/xci/p2p/discover"
 	"github.com/xcareteam/xci/rpc"
+	"os"
 )
 
 // PrivateAdminAPI is the collection of administrative API methods exposed only
@@ -75,12 +76,35 @@ func (api *PrivateAdminAPI) RemovePeer(url string) (bool, error) {
 	return true, nil
 }
 
-func (api *PrivateAdminAPI) SetupRealMode() (string, error) {
+// SetupRealMode change the node from the anonymous to the certified node
+func (api *PrivateAdminAPI) SetupRealMode(pathToCertFile string) (bool, error) {
+	if _, err := os.Stat(pathToCertFile); os.IsNotExist(err) {
+		return false, err
+	}
+
+	// Make sure the server is running, fail otherwise
 	server := api.node.Server()
 	if server == nil {
-		return "error", ErrNodeStopped
+		return false, ErrNodeStopped
 	}
-	return "setup done", nil
+
+	if server.Config.Certified {
+		return false, ErrCertifyDone
+	}
+
+	// Make sure no other peers been connected
+	if server.PeerCount() != 0 {
+		return false, ErrPeersConn
+	}
+
+	if key, err := crypto.LoadECDSA(pathToCertFile); err == nil {
+		server.Certified = true
+		server.PrivateKey = key
+	} else {
+		return false, err
+	}
+
+	return true, nil
 }
 
 // PeerEvents creates an RPC subscription which receives peer events from the
