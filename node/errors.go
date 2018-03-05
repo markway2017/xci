@@ -28,6 +28,8 @@ var (
 	ErrNodeStopped    = errors.New("node not started")
 	ErrNodeRunning    = errors.New("node already running")
 	ErrServiceUnknown = errors.New("unknown service")
+	ErrCertifyDone	  = errors.New("node has been certified")
+	ErrPeersConn	  = errors.New("node has peers connected")
 
 	datadirInUseErrnos = map[uint]bool{11: true, 32: true, 35: true}
 )
