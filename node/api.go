@@ -75,6 +75,14 @@ func (api *PrivateAdminAPI) RemovePeer(url string) (bool, error) {
 	return true, nil
 }
 
+func (api *PrivateAdminAPI) SetupRealMode() (string, error) {
+	server := api.node.Server()
+	if server == nil {
+		return "error", ErrNodeStopped
+	}
+	return "setup done", nil
+}
+
 // PeerEvents creates an RPC subscription which receives peer events from the
 // node's p2p.Server
 func (api *PrivateAdminAPI) PeerEvents(ctx context.Context) (*rpc.Subscription, error) {
