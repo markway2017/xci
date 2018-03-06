@@ -32,11 +32,6 @@ type DB struct {
 	// Need 64-bit alignment.
 	seq uint64
 
-	// Stats. Need 64-bit alignment.
-	cWriteDelay            int64 // The cumulative duration of write delays
-	cWriteDelayN           int32 // The cumulative number of write delays
-	aliveSnaps, aliveIters int32
-
 	// Session.
 	s *session
 
@@ -54,14 +49,18 @@ type DB struct {
 	snapsMu   sync.Mutex
 	snapsList *list.List
 
+	// Stats.
+	aliveSnaps, aliveIters int32
+
 	// Write.
-	batchPool    sync.Pool
-	writeMergeC  chan writeMerge
+	writeC       chan *Batch
 	writeMergedC chan bool
 	writeLockC   chan struct{}
 	writeAckC    chan error
 	writeDelay   time.Duration
 	writeDelayN  int
+	journalC     chan *Batch
+	journalAckC  chan error
 	tr           *Transaction
 
 	// Compaction.
@@ -95,11 +94,12 @@ func openDB(s *session) (*DB, error) {
 		// Snapshot
 		snapsList: list.New(),
 		// Write
-		batchPool:    sync.Pool{New: newBatch},
-		writeMergeC:  make(chan writeMerge),
+		writeC:       make(chan *Batch),
 		writeMergedC: make(chan bool),
 		writeLockC:   make(chan struct{}, 1),
 		writeAckC:    make(chan error),
+		journalC:     make(chan *Batch),
+		journalAckC:  make(chan error),
 		// Compaction
 		tcompCmdC:   make(chan cCmd),
 		tcompPauseC: make(chan chan<- struct{}),
@@ -144,10 +144,10 @@ func openDB(s *session) (*DB, error) {
 	if readOnly {
 		db.SetReadOnly()
 	} else {
-		db.closeW.Add(2)
+		db.closeW.Add(3)
 		go db.tCompaction()
 		go db.mCompaction()
-		// go db.jWriter()
+		go db.jWriter()
 	}
 
 	s.logf("db@open done T·%v", time.Since(start))
@@ -162,10 +162,10 @@ func openDB(s *session) (*DB, error) {
 // os.ErrExist error.
 //
 // Open will return an error with type of ErrCorrupted if corruption
-// detected in the DB. Use errors.IsCorrupted to test whether an error is
-// due to corruption. Corrupted DB can be recovered with Recover function.
+// detected in the DB. Corrupted DB can be recovered with Recover
+// function.
 //
-// The returned DB instance is safe for concurrent use.
+// The returned DB instance is goroutine-safe.
 // The DB must be closed after use, by calling Close method.
 func Open(stor storage.Storage, o *opt.Options) (db *DB, err error) {
 	s, err := newSession(stor, o)
@@ -202,13 +202,13 @@ func Open(stor storage.Storage, o *opt.Options) (db *DB, err error) {
 // os.ErrExist error.
 //
 // OpenFile uses standard file-system backed storage implementation as
-// described in the leveldb/storage package.
+// desribed in the leveldb/storage package.
 //
 // OpenFile will return an error with type of ErrCorrupted if corruption
-// detected in the DB. Use errors.IsCorrupted to test whether an error is
-// due to corruption. Corrupted DB can be recovered with Recover function.
+// detected in the DB. Corrupted DB can be recovered with Recover
+// function.
 //
-// The returned DB instance is safe for concurrent use.
+// The returned DB instance is goroutine-safe.
 // The DB must be closed after use, by calling Close method.
 func OpenFile(path string, o *opt.Options) (db *DB, err error) {
 	stor, err := storage.OpenFile(path, o.GetReadOnly())
@@ -229,7 +229,7 @@ func OpenFile(path string, o *opt.Options) (db *DB, err error) {
 // The DB must already exist or it will returns an error.
 // Also, Recover will ignore ErrorIfMissing and ErrorIfExist options.
 //
-// The returned DB instance is safe for concurrent use.
+// The returned DB instance is goroutine-safe.
 // The DB must be closed after use, by calling Close method.
 func Recover(stor storage.Storage, o *opt.Options) (db *DB, err error) {
 	s, err := newSession(stor, o)
@@ -255,10 +255,10 @@ func Recover(stor storage.Storage, o *opt.Options) (db *DB, err error) {
 // The DB must already exist or it will returns an error.
 // Also, Recover will ignore ErrorIfMissing and ErrorIfExist options.
 //
-// RecoverFile uses standard file-system backed storage implementation as described
+// RecoverFile uses standard file-system backed storage implementation as desribed
 // in the leveldb/storage package.
 //
-// The returned DB instance is safe for concurrent use.
+// The returned DB instance is goroutine-safe.
 // The DB must be closed after use, by calling Close method.
 func RecoverFile(path string, o *opt.Options) (db *DB, err error) {
 	stor, err := storage.OpenFile(path, false)
@@ -323,7 +323,7 @@ func recoverTable(s *session, o *opt.Options) error {
 			}
 		}
 		err = iter.Error()
-		if err != nil && !errors.IsCorrupted(err) {
+		if err != nil {
 			return
 		}
 		err = tw.Close()
@@ -394,7 +394,7 @@ func recoverTable(s *session, o *opt.Options) error {
 			}
 			imax = append(imax[:0], key...)
 		}
-		if err := iter.Error(); err != nil && !errors.IsCorrupted(err) {
+		if err := iter.Error(); err != nil {
 			iter.Release()
 			return err
 		}
@@ -504,11 +504,10 @@ func (db *DB) recoverJournal() error {
 			checksum    = db.s.o.GetStrict(opt.StrictJournalChecksum)
 			writeBuffer = db.s.o.GetWriteBuffer()
 
-			jr       *journal.Reader
-			mdb      = memdb.New(db.s.icmp, writeBuffer)
-			buf      = &util.Buffer{}
-			batchSeq uint64
-			batchLen int
+			jr    *journal.Reader
+			mdb   = memdb.New(db.s.icmp, writeBuffer)
+			buf   = &util.Buffer{}
+			batch = &Batch{}
 		)
 
 		for _, fd := range fds {
@@ -527,7 +526,7 @@ func (db *DB) recoverJournal() error {
 			}
 
 			// Flush memdb and remove obsolete journal file.
-			if !ofd.Zero() {
+			if !ofd.Nil() {
 				if mdb.Len() > 0 {
 					if _, err := db.s.flushMemdb(rec, mdb, 0); err != nil {
 						fr.Close()
@@ -570,8 +569,7 @@ func (db *DB) recoverJournal() error {
 					fr.Close()
 					return errors.SetFd(err, fd)
 				}
-				batchSeq, batchLen, err = decodeBatchToMem(buf.Bytes(), db.seq, mdb)
-				if err != nil {
+				if err := batch.memDecodeAndReplay(db.seq, buf.Bytes(), mdb); err != nil {
 					if !strict && errors.IsCorrupted(err) {
 						db.s.logf("journal error: %v (skipped)", err)
 						// We won't apply sequence number as it might be corrupted.
@@ -583,7 +581,7 @@ func (db *DB) recoverJournal() error {
 				}
 
 				// Save sequence number.
-				db.seq = batchSeq + uint64(batchLen)
+				db.seq = batch.seq + uint64(batch.Len())
 
 				// Flush it if large enough.
 				if mdb.Size() >= writeBuffer {
@@ -626,7 +624,7 @@ func (db *DB) recoverJournal() error {
 	}
 
 	// Remove the last obsolete journal file.
-	if !ofd.Zero() {
+	if !ofd.Nil() {
 		db.s.stor.Remove(ofd)
 	}
 
@@ -663,10 +661,9 @@ func (db *DB) recoverJournalRO() error {
 		db.logf("journal@recovery RO·Mode F·%d", len(fds))
 
 		var (
-			jr       *journal.Reader
-			buf      = &util.Buffer{}
-			batchSeq uint64
-			batchLen int
+			jr    *journal.Reader
+			buf   = &util.Buffer{}
+			batch = &Batch{}
 		)
 
 		for _, fd := range fds {
@@ -706,8 +703,7 @@ func (db *DB) recoverJournalRO() error {
 					fr.Close()
 					return errors.SetFd(err, fd)
 				}
-				batchSeq, batchLen, err = decodeBatchToMem(buf.Bytes(), db.seq, mdb)
-				if err != nil {
+				if err := batch.memDecodeAndReplay(db.seq, buf.Bytes(), mdb); err != nil {
 					if !strict && errors.IsCorrupted(err) {
 						db.s.logf("journal error: %v (skipped)", err)
 						// We won't apply sequence number as it might be corrupted.
@@ -719,7 +715,7 @@ func (db *DB) recoverJournalRO() error {
 				}
 
 				// Save sequence number.
-				db.seq = batchSeq + uint64(batchLen)
+				db.seq = batch.seq + uint64(batch.Len())
 			}
 
 			fr.Close()
@@ -846,7 +842,7 @@ func (db *DB) Get(key []byte, ro *opt.ReadOptions) (value []byte, err error) {
 
 // Has returns true if the DB does contains the given key.
 //
-// It is safe to modify the contents of the argument after Has returns.
+// It is safe to modify the contents of the argument after Get returns.
 func (db *DB) Has(key []byte, ro *opt.ReadOptions) (ret bool, err error) {
 	err = db.ok()
 	if err != nil {
@@ -860,7 +856,7 @@ func (db *DB) Has(key []byte, ro *opt.ReadOptions) (ret bool, err error) {
 
 // NewIterator returns an iterator for the latest snapshot of the
 // underlying DB.
-// The returned iterator is not safe for concurrent use, but it is safe to use
+// The returned iterator is not goroutine-safe, but it is safe to use
 // multiple iterators concurrently, with each in a dedicated goroutine.
 // It is also safe to use an iterator concurrently with modifying its
 // underlying DB. The resultant key/value pairs are guaranteed to be
@@ -906,8 +902,6 @@ func (db *DB) GetSnapshot() (*Snapshot, error) {
 //		Returns the number of files at level 'n'.
 //	leveldb.stats
 //		Returns statistics of the underlying DB.
-//	leveldb.writedelay
-//		Returns cumulative write delay caused by compaction.
 //	leveldb.sstables
 //		Returns sstables list for each level.
 //	leveldb.blockpool
@@ -959,9 +953,6 @@ func (db *DB) GetProperty(name string) (value string, err error) {
 				level, len(tables), float64(tables.size())/1048576.0, duration.Seconds(),
 				float64(read)/1048576.0, float64(write)/1048576.0)
 		}
-	case p == "writedelay":
-		writeDelayN, writeDelay := atomic.LoadInt32(&db.cWriteDelayN), time.Duration(atomic.LoadInt64(&db.cWriteDelay))
-		value = fmt.Sprintf("DelayN:%d Delay:%s", writeDelayN, writeDelay)
 	case p == "sstables":
 		for level, tables := range v.levels {
 			value += fmt.Sprintf("--- level %d ---\n", level)
@@ -1071,8 +1062,6 @@ func (db *DB) Close() error {
 	if db.journal != nil {
 		db.journal.Close()
 		db.journalWriter.Close()
-		db.journal = nil
-		db.journalWriter = nil
 	}
 
 	if db.writeDelayN > 0 {
@@ -1088,11 +1077,15 @@ func (db *DB) Close() error {
 		if err1 := db.closer.Close(); err == nil {
 			err = err1
 		}
-		db.closer = nil
 	}
 
-	// Clear memdbs.
-	db.clearMems()
+	// NIL'ing pointers.
+	db.s = nil
+	db.mem = nil
+	db.frozenMem = nil
+	db.journal = nil
+	db.journalWriter = nil
+	db.closer = nil
 
 	return err
 }
