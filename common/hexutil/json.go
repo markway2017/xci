@@ -234,6 +234,13 @@ func (b Uint64) String() string {
 	return EncodeUint64(uint64(b))
 }
 
+func (b Uint64) ToInt() *big.Int {
+	var intOne = big.Int{}
+	intOne.SetUint64(uint64(b))
+
+	return &intOne
+}
+
 // Uint marshals/unmarshals as a JSON string with 0x prefix.
 // The zero value marshals as "0x0".
 type Uint uint
