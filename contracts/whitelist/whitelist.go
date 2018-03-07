@@ -44,3 +44,24 @@ func (self *WhiteList) GetDID(enode string) (string, error) {
 	return self.GetDID(enode);
 }
 
+func Test(ctx *node.ServiceContext) (*WhiteList, error) {
+	var apiBackend ethapi.Backend
+	var ethereum *eth.Ethereum
+	if err := ctx.Service(&ethereum); err == nil {
+		apiBackend = ethereum.ApiBackend
+	} else {
+		var ethereum *les.LightEthereum
+		if err := ctx.Service(&ethereum); err == nil {
+			apiBackend = ethereum.ApiBackend
+		} else {
+			return nil, err
+		}
+	}
+
+	contract, err := NewWhiteList(nil, TestNetAddress, eth.NewContractBackend(apiBackend))
+	if err != nil {
+		return nil, err
+	}
+
+	return contract, nil
+}
