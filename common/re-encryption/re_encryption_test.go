@@ -17,11 +17,13 @@ func TestReencrypt(t *testing.T) {
 	patientPrivateKey, err := ecdsa.GenerateKey(pubkeyCurve, rand.Reader) // this generates a public & private key pair
 	if err != nil {
 		t.Errorf("failed to generate key")
+		t.Fail()
 	}
 
 	doctorPrivateKey, err := ecdsa.GenerateKey(pubkeyCurve, rand.Reader) // this generates a public & private key pair
 	if err != nil {
 		t.Errorf("failed to generate key")
+		t.Fail()
 	}
 
 	start := time.Now()
@@ -34,6 +36,7 @@ func TestReencrypt(t *testing.T) {
 	encryptedBytes,err := ecies.Encrypt(rand.Reader, &patientEciesPrivate.PublicKey, []byte(msg), nil, nil)
 	if err != nil {
 		t.Errorf("Encrypt process error: "+err.Error())
+		t.Fail()
 	}
 	t.Log(hex.EncodeToString(encryptedBytes))
 
@@ -41,14 +44,16 @@ func TestReencrypt(t *testing.T) {
 	newEncryptedBytes,err := Reencrypt(encryptedBytes,patientPrivateKey,&doctorPrivateKey.PublicKey)
 	if err != nil {
 		t.Errorf("Reencrypt process error: "+err.Error())
+		t.Fail()
 	}
 	t.Log(hex.EncodeToString(newEncryptedBytes))
 
-	t.Log("Decrypt with new doctor private key")
+	t.Log("Decrypt with doctor private key")
 	doctorEciesPrivate := ecies.ImportECDSA(doctorPrivateKey)
 	newMsg,err :=doctorEciesPrivate.Decrypt(rand.Reader, newEncryptedBytes,nil,nil)
 	if err != nil {
 		t.Errorf("Decrypt process error: "+err.Error())
+		t.Fail()
 	}
 	t.Log(string(newMsg))
 
