@@ -38,6 +38,7 @@ import (
 	"github.com/xcareteam/xci/core/types"
 	"github.com/xcareteam/xci/crypto"
 	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/accounts/abi/bind"
 )
 
 var (
@@ -310,6 +311,27 @@ func (ks *KeyStore) SignTxWithPassphrase(a accounts.Account, passphrase string, 
 		return types.SignTx(tx, types.NewEIP155Signer(chainID), key.PrivateKey)
 	}
 	return types.SignTx(tx, types.HomesteadSigner{}, key.PrivateKey)
+}
+
+func (ks *KeyStore) NewKeyedTransactor(a accounts.Account, passphrase string) (*bind.TransactOpts, error) {
+	_, key, err := ks.getDecryptedKey(a, passphrase)
+	if err != nil {
+		return nil, err
+	}
+
+	return &bind.TransactOpts{
+		From: a.Address,
+		Signer: func(signer types.Signer, address common.Address, tx *types.Transaction) (*types.Transaction, error) {
+			if address != a.Address {
+				return nil, errors.New("not authorized to sign this account")
+			}
+			signature, err := crypto.Sign(signer.Hash(tx).Bytes(), key.PrivateKey)
+			if err != nil {
+				return nil, err
+			}
+			return tx.WithSignature(signer, signature)
+		},
+	}, nil
 }
 
 // Unlock unlocks the given account indefinitely.

@@ -9,6 +9,7 @@ import (
 	"github.com/xcareteam/xci/node"
 	"github.com/xcareteam/xci/internal/ethapi"
 	"github.com/xcareteam/xci/les"
+	"github.com/xcareteam/xci/accounts"
 )
 
 var (
@@ -44,7 +45,7 @@ func (self *WhiteList) GetDID(enode string) (string, error) {
 	return self.GetDID(enode);
 }
 
-func Test(ctx *node.ServiceContext) (*WhiteList, error) {
+func GetNewWhiteList(ctx *node.ServiceContext, address common.Address, passphrase string) (*WhiteList, error) {
 	var apiBackend ethapi.Backend
 	var ethereum *eth.Ethereum
 	if err := ctx.Service(&ethereum); err == nil {
@@ -58,7 +59,18 @@ func Test(ctx *node.ServiceContext) (*WhiteList, error) {
 		}
 	}
 
-	contract, err := NewWhiteList(nil, TestNetAddress, eth.NewContractBackend(apiBackend))
+	account := accounts.Account{Address: address}
+	wallet, err := ethereum.AccountManager().Find(account)
+	if err != nil {
+		return nil, err
+	}
+
+	transactOpts, err := wallet.NewKeyedTransactor(account, passphrase)
+	if err != nil {
+		return nil, err
+	}
+
+	contract, err := NewWhiteList(transactOpts, TestNetAddress, eth.NewContractBackend(apiBackend))
 	if err != nil {
 		return nil, err
 	}

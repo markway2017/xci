@@ -19,28 +19,28 @@ package bind
 import (
 	"crypto/ecdsa"
 	"errors"
-	"io"
-	"io/ioutil"
-
-	"github.com/xcareteam/xci/accounts/keystore"
+	//"io"
+	//"io/ioutil"
+	//
+	//"github.com/xcareteam/xci/accounts/keystore"
 	"github.com/xcareteam/xci/common"
 	"github.com/xcareteam/xci/core/types"
 	"github.com/xcareteam/xci/crypto"
 )
 
-// NewTransactor is a utility method to easily create a transaction signer from
-// an encrypted json key stream and the associated passphrase.
-func NewTransactor(keyin io.Reader, passphrase string) (*TransactOpts, error) {
-	json, err := ioutil.ReadAll(keyin)
-	if err != nil {
-		return nil, err
-	}
-	key, err := keystore.DecryptKey(json, passphrase)
-	if err != nil {
-		return nil, err
-	}
-	return NewKeyedTransactor(key.PrivateKey), nil
-}
+//// NewTransactor is a utility method to easily create a transaction signer from
+//// an encrypted json key stream and the associated passphrase.
+//func NewTransactor(keyin io.Reader, passphrase string) (*TransactOpts, error) {
+//	json, err := ioutil.ReadAll(keyin)
+//	if err != nil {
+//		return nil, err
+//	}
+//	key, err := keystore.DecryptKey(json, passphrase)
+//	if err != nil {
+//		return nil, err
+//	}
+//	return NewKeyedTransactor(key.PrivateKey), nil
+//}
 
 // NewKeyedTransactor is a utility method to easily create a transaction signer
 // from a single private key.
