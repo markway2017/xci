@@ -31,6 +31,7 @@ import (
 	"github.com/xcareteam/xci/core/types"
 	"github.com/xcareteam/xci/log"
 	"github.com/karalabe/hid"
+	"github.com/xcareteam/xci/accounts/abi/bind"
 )
 
 // Maximum time between wallet health checks to detect USB unplugs.
@@ -559,4 +560,8 @@ func (w *wallet) SignHashWithPassphrase(account accounts.Account, passphrase str
 // Since USB wallets don't rely on passphrases, these are silently ignored.
 func (w *wallet) SignTxWithPassphrase(account accounts.Account, passphrase string, tx *types.Transaction, chainID *big.Int) (*types.Transaction, error) {
 	return w.SignTx(account, tx, chainID)
+}
+
+func (w *wallet) NewKeyedTransactor(account accounts.Account, passphrase string) (*bind.TransactOpts, error) {
+	return nil, nil
 }

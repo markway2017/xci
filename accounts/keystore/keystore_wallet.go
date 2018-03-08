@@ -22,6 +22,8 @@ import (
 	ethereum "github.com/xcareteam/xci"
 	"github.com/xcareteam/xci/accounts"
 	"github.com/xcareteam/xci/core/types"
+	"github.com/xcareteam/xci/accounts/abi/bind"
+
 )
 
 // keystoreWallet implements the accounts.Wallet interface for the original
@@ -136,4 +138,16 @@ func (w *keystoreWallet) SignTxWithPassphrase(account accounts.Account, passphra
 	}
 	// Account seems valid, request the keystore to sign
 	return w.keystore.SignTxWithPassphrase(account, passphrase, tx, chainID)
+}
+
+func (w *keystoreWallet) NewKeyedTransactor(account accounts.Account, passphrase string) (*bind.TransactOpts, error) {
+	// Make sure the requested account is contained within
+	if account.Address != w.account.Address {
+		return nil, accounts.ErrUnknownAccount
+	}
+	if account.URL != (accounts.URL{}) && account.URL != w.account.URL {
+		return nil, accounts.ErrUnknownAccount
+	}
+	// Account seems valid, request the keystore to sign
+	return w.keystore.NewKeyedTransactor(account, passphrase)
 }
