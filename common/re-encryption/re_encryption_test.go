@@ -52,6 +52,10 @@ func TestReencrypt(t *testing.T) {
 	}
 	t.Log(string(newMsg))
 
+	if string(newMsg) != msg {
+		t.Fail()
+	}
+
 	elapsed := time.Since(start)
-	t.Logf("Binomial took %s", elapsed)
+	t.Logf("Time cost %s", elapsed)
 }
