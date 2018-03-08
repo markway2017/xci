@@ -3,31 +3,35 @@ package re_encryption
 import (
 	"testing"
 	"crypto/rand"
-	"crypto/rsa"
 	"encoding/hex"
+	"crypto/elliptic"
+	"crypto/ecdsa"
+	"github.com/xcareteam/xci/crypto/ecies"
+	"time"
 )
 
-func TestSet(t *testing.T) {
+func TestReencrypt(t *testing.T) {
 
-	size := 1024
-	if testing.Short() {
-		size = 128
-	}
-	patientPrivateKey, err := rsa.GenerateKey(rand.Reader, size)
+	pubkeyCurve := elliptic.P256() //see http://golang.org/pkg/crypto/elliptic/#P256
+
+	patientPrivateKey, err := ecdsa.GenerateKey(pubkeyCurve, rand.Reader) // this generates a public & private key pair
 	if err != nil {
 		t.Errorf("failed to generate key")
 	}
 
-	doctorPrivateKey, err := rsa.GenerateKey(rand.Reader, size)
+	doctorPrivateKey, err := ecdsa.GenerateKey(pubkeyCurve, rand.Reader) // this generates a public & private key pair
 	if err != nil {
 		t.Errorf("failed to generate key")
 	}
+
+	start := time.Now()
 
 	msg := "I am a patient"
 	t.Log("Original data: "+msg)
 
 	t.Log("Encrypt with patient public key")
-	encryptedBytes,err := rsa.EncryptPKCS1v15(rand.Reader, &patientPrivateKey.PublicKey, []byte(msg))
+	patientEciesPrivate := ecies.ImportECDSA(patientPrivateKey)
+	encryptedBytes,err := ecies.Encrypt(rand.Reader, &patientEciesPrivate.PublicKey, []byte(msg), nil, nil)
 	if err != nil {
 		t.Errorf("Encrypt process error: "+err.Error())
 	}
@@ -41,9 +45,13 @@ func TestSet(t *testing.T) {
 	t.Log(hex.EncodeToString(newEncryptedBytes))
 
 	t.Log("Decrypt with new doctor private key")
-	newMsg,err :=rsa.DecryptPKCS1v15(rand.Reader, doctorPrivateKey, newEncryptedBytes)
+	doctorEciesPrivate := ecies.ImportECDSA(doctorPrivateKey)
+	newMsg,err :=doctorEciesPrivate.Decrypt(rand.Reader, newEncryptedBytes,nil,nil)
 	if err != nil {
 		t.Errorf("Decrypt process error: "+err.Error())
 	}
 	t.Log(string(newMsg))
+
+	elapsed := time.Since(start)
+	t.Logf("Binomial took %s", elapsed)
 }

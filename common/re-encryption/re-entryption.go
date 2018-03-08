@@ -1,19 +1,24 @@
 package re_encryption
 
 import (
-	"crypto/rsa"
 	"crypto/rand"
 	"errors"
+	"github.com/xcareteam/xci/crypto/ecies"
+	"crypto/ecdsa"
 )
 
-func Reencrypt(data []byte, patientPrivate *rsa.PrivateKey, doctorPublic *rsa.PublicKey) ([]byte, error) {
+func Reencrypt(data []byte, patientPrivate *ecdsa.PrivateKey, doctorPublic *ecdsa.PublicKey) ([]byte, error) {
 
-	decryptedBytes,err :=rsa.DecryptPKCS1v15(rand.Reader, patientPrivate, data)
+	patientEciesPrivate := ecies.ImportECDSA(patientPrivate)
+
+	doctorEciesPublic := ecies.ImportECDSAPublic(doctorPublic)
+
+	decryptedBytes,err :=patientEciesPrivate.Decrypt(rand.Reader, data, nil,nil)
 	if err != nil {
 		return nil, errors.New("Decrypt with patient private key error: "+err.Error())
 	}
 
-	encryptedBytes,err := rsa.EncryptPKCS1v15(rand.Reader, doctorPublic, decryptedBytes)
+	encryptedBytes,err := ecies.Encrypt(rand.Reader, doctorEciesPublic, decryptedBytes, nil, nil)
 	if err != nil {
 		return nil, errors.New("Encrypt with doctor public key error: "+err.Error())
 	}
