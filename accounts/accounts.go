@@ -24,6 +24,7 @@ import (
 	"github.com/xcareteam/xci/common"
 	"github.com/xcareteam/xci/core/types"
 	"github.com/xcareteam/xci/event"
+	"github.com/xcareteam/xci/accounts/abi/bind"
 )
 
 // Account represents an Ethereum account located at a specific location defined
@@ -126,6 +127,8 @@ type Wallet interface {
 	// It looks up the account specified either solely via its address contained within,
 	// or optionally with the aid of any location metadata from the embedded URL field.
 	SignTxWithPassphrase(account Account, passphrase string, tx *types.Transaction, chainID *big.Int) (*types.Transaction, error)
+
+	NewKeyedTransactor(account Account, passphrase string) (*bind.TransactOpts, error)
 }
 
 // Backend is a "wallet provider" that may contain a batch of accounts they can

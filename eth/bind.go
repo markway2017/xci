@@ -28,8 +28,8 @@ type ContractBackend struct {
 
 // NewContractBackend creates a new native contract backend using an existing
 // Ethereum object.
-func NewContractBackend(apiBackend ethapi.Backend) *ContractBackend {
-	return &ContractBackend{
+func NewContractBackend(apiBackend ethapi.Backend) ContractBackend {
+	return ContractBackend{
 		eapi:  ethapi.NewPublicEthereumAPI(apiBackend),
 		bcapi: ethapi.NewPublicBlockChainAPI(apiBackend),
 		txapi: ethapi.NewPublicTransactionPoolAPI(apiBackend, new(ethapi.AddrLocker)),
@@ -119,4 +119,66 @@ func (b *ContractBackend) SendTransaction(ctx context.Context, tx *types.Transac
 	raw, _ := rlp.EncodeToBytes(tx)
 	_, err := b.txapi.SendRawTransaction(ctx, raw)
 	return err
+}
+
+
+// FilterLogs executes a log filter operation, blocking during execution and
+// returning all the results in one batch.
+func (b *ContractBackend) FilterLogs(ctx context.Context, query ethereum.FilterQuery) ([]types.Log, error) {
+	//// Initialize unset filter boundaried to run from genesis to chain head
+	//from := int64(0)
+	//if query.FromBlock != nil {
+	//	from = query.FromBlock.Int64()
+	//}
+	//to := int64(-1)
+	//if query.ToBlock != nil {
+	//	to = query.ToBlock.Int64()
+	//}
+	//// Construct and execute the filter
+	//filter := filters.New(&filterBackend{b.database, b.blockchain}, from, to, query.Addresses, query.Topics)
+	//
+	//logs, err := filter.Logs(ctx)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//res := make([]types.Log, len(logs))
+	//for i, log := range logs {
+	//	res[i] = *log
+	//}
+	return nil, nil
+}
+
+// SubscribeFilterLogs creates a background log filtering operation, returning a
+// subscription immediately, which can be used to stream the found events.
+func (b *ContractBackend) SubscribeFilterLogs(ctx context.Context, query ethereum.FilterQuery, ch chan<- types.Log) (ethereum.Subscription, error) {
+	//// Subscribe to contract events
+	//sink := make(chan []*types.Log)
+	//
+	//sub, err := b.events.SubscribeLogs(query, sink)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//// Since we're getting logs in batches, we need to flatten them into a plain stream
+	//return event.NewSubscription(func(quit <-chan struct{}) error {
+	//	defer sub.Unsubscribe()
+	//	for {
+	//		select {
+	//		case logs := <-sink:
+	//			for _, log := range logs {
+	//				select {
+	//				case ch <- *log:
+	//				case err := <-sub.Err():
+	//					return err
+	//				case <-quit:
+	//					return nil
+	//				}
+	//			}
+	//		case err := <-sub.Err():
+	//			return err
+	//		case <-quit:
+	//			return nil
+	//		}
+	//	}
+	//}), nil
+	return nil, nil
 }
